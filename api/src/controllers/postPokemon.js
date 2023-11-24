@@ -1,4 +1,4 @@
-const {Pokemon} = require("../db");
+const { Pokemon, Type } = require("../db");
 
 
 const postPokemon = async(req, res) => {
@@ -19,6 +19,10 @@ const postPokemon = async(req, res) => {
                 weight,
             });
 
+            const tipo = await Type.findOne({where: {name: 'electric'}});
+            
+            await newPokemon.addType(tipo);
+            
             return res.status(200).json(newPokemon);        
         }
         return res.status(400).json({msg: 'Los datos no estan completos'});

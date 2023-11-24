@@ -13,8 +13,7 @@ const syncDataTypes = async() => {
         
                 await Type.create({
                     name: type.name,
-                });                 
-                
+                });                                 
             }           
              
         } else {

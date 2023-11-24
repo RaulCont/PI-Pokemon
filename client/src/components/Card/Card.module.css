@@ -1,0 +1,13 @@
+
+
+.tarjeta {    
+    border-style: groove;
+    border-color: yellow;    
+    border-width: 5px;
+    margin: 10px;
+    padding: 40px;
+}
+
+img {
+    width: 150px;
+}

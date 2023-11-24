@@ -16,7 +16,6 @@ routes.get('/types', (req, res) => {
     getTypes(req, res);
 });
 
-
 routes.get('/name', (req, res) => {
     console.log('por name');
     getPokemonByName(req, res);
