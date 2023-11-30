@@ -1,0 +1,7 @@
+
+
+.contenedor_carta {
+    display: flex;
+    justify-content: center;
+    background-color: red;
+}

@@ -4,9 +4,9 @@ const { Pokemon, Type } = require("../db");
 const postPokemon = async(req, res) => {
     
     try {
-        const {name, image, hp, attack, defense, speed, height, weight} = req.body;
+        const {name, image, hp, attack, defense, speed, height, weight, types} = req.body;
         
-        if(name && image && hp && attack && defense && speed && height && weight) {
+        if(name && image && hp && attack && defense && speed && height && weight && types) {
             
             const newPokemon = await Pokemon.create({
                 name,
@@ -16,13 +16,14 @@ const postPokemon = async(req, res) => {
                 defense,
                 speed,
                 height,
-                weight,
+                weight,                
             });
-
-            const tipo = await Type.findOne({where: {name: 'electric'}});
-            
-            await newPokemon.addType(tipo);
-            
+                                    
+            for(let i = 0; i < types.length; i++) {                
+                const tipo = await Type.findOne({where: {name: types[i]}});
+                await newPokemon.addType(tipo);                               
+            }
+                                    
             return res.status(200).json(newPokemon);        
         }
         return res.status(400).json({msg: 'Los datos no estan completos'});

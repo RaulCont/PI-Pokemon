@@ -1,13 +1,28 @@
 
-
 .tarjeta {    
-    border-style: groove;
-    border-color: yellow;    
-    border-width: 5px;
+    border-style: solid;
+    border-color: white;    
+    border-width: 3px;
     margin: 10px;
-    padding: 40px;
+    /* padding: 30px;   */
+    border-radius: 5px; 
+    background-color: orange; 
 }
 
-img {
-    width: 150px;
+.tarjeta, a {
+    text-decoration: none;
+    color: white;
+}
+
+.img_tarjeta {
+    width: 200px;
+}
+
+.middle {
+    background-color: black;
+    width: 100%;  
+    height: 50%; 
+    /* position: absolute; */
+    bottom: 0;
+    /* margin: 0 auto;      */
 }

@@ -1,24 +1,44 @@
-import { useSelector } from "react-redux"
 import { Card } from "../Card/Card"
 import style from './Cards.module.css';
+import { useState } from "react";
 
-export const Cards = () => {
-    const pokemons = useSelector(state => state.pokemonList);
-    const tipos = useSelector(state => state.pokemonTypeList);
-    const page = pokemons.slice(12, 24);
+export const Cards = ({pokes}) => {                
+         
+    const [currentPage, setCurrentPage] = useState(1);
+    const pokemonsPerPage = 12;
+
+    const indexOfLastPokemon = currentPage * pokemonsPerPage;
+    const indexOfFirstPokemon = indexOfLastPokemon - pokemonsPerPage;
+    const currentPokemons = pokes.slice(indexOfFirstPokemon, indexOfLastPokemon);
+
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
+        
     return (
-        <div className={style.contenedorCartas}>
-            {
-                pokemons.map(pokemon => {
-                    return <Card 
-                        key={pokemon.id}
-                        id={pokemon.id} 
-                        name={pokemon.name}
-                        image={pokemon.image}
-                        types={pokemon.types}
-                    />
-                })
-            }
+        <div>
+            <div className={style.contenedorCartas}>
+                {
+                    currentPokemons.map(pokemon => {
+                        return <Card 
+                            key={pokemon.id}
+                            id={pokemon.id} 
+                            name={pokemon.name}
+                            image={pokemon.image}
+                            types={pokemon.types}
+                            attack={pokemon.attack}
+                        />
+                    })                    
+                }
+            </div>
+                <div>
+                    <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                        Prev
+                    </button>
+                    <button onClick={() => handlePageChange(currentPage + 1)} disabled={indexOfLastPokemon >= pokes.length}>
+                        Next
+                    </button>
+                </div>
         </div>
     )
 }

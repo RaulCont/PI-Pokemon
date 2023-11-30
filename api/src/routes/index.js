@@ -1,4 +1,4 @@
-const { getPokemonById, getPokemonByName, getPokemons } = require('../controllers/getPokemon');
+const { getPokemonById, getPokemonByName, getPokemons, getPokemonDb, getPokemonPokemonTypes } = require('../controllers/getPokemon');
 const { getTypes } = require('../controllers/getTypes');
 const { postPokemon } = require('../controllers/postPokemon');
 
@@ -10,6 +10,16 @@ routes.get('/', (req, res) => {
     console.log('get all pokemons');
     getPokemons(req, res);
 });
+
+routes.get('/db', (req, res) => {
+    console.log('get pokemons db');
+    getPokemonDb(req, res); 
+});
+
+routes.get('/dbtypes', (req, res) => {
+    console.log('get pokemones type db');
+    getPokemonPokemonTypes(req, res);
+})
 
 routes.get('/types', (req, res) => {
     console.log('Types');

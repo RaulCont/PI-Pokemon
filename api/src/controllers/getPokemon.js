@@ -1,15 +1,16 @@
 const axios = require('axios');
+const { Pokemon } = require('../db');
+const db = require('../db');
 
 const getPokemons = async(req, res) => {
         
-
     try {
-        const { data: listData } = await axios.get(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=50`);
+        const { data: listData } = await axios.get(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=60`);
         
         if (!listData || !listData.results) {
             throw new Error('Invalid data received from PokeAPI');
         }
-      
+        
         const pokemonPromises = listData.results.map(async (pok) => axios.get(pok.url));
       
         const pokemonResponses = await Promise.all(pokemonPromises);
@@ -36,6 +37,17 @@ const getPokemons = async(req, res) => {
         return res.status(404).send(error.message);
     }
     
+}
+
+const getPokemonDb = async(req, res) => {
+            
+    try {
+        const pokemons = await Pokemon.findAll();        
+        return res.status(200).json(pokemons);
+    } catch (error) {
+        return res.status(404).send(error.message);
+    }
+
 }
 
 const getPokemonById = async(req, res) => {
@@ -116,10 +128,31 @@ const getPokemonByName = async(req, res) => {
 
 }
 
+const getPokemonPokemonTypes = async(req, res) => {
+        
+    const pokemonTipo = db.pokemonTypes;
+
+    try {
+        const resultados = await pokemonTipo.findAll();
+        const types = [];
+        resultados.forEach(resultado => {
+            types.push(resultado);            
+        });
+
+        return res.status(200).json(types);
+    } catch (error) {
+        console.error('Error al obtener datos de PokemonTipo:', error);
+        return res.status(404).send('Error al obtener datos de PokemonTipo:', error);
+    }
+
+}
+
 
 module.exports = {
     getPokemonById,
     getPokemonByName,
-    getPokemons
+    getPokemons,
+    getPokemonDb,
+    getPokemonPokemonTypes
 
 }
