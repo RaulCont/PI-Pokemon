@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { Pokemon } = require('../db');
 const db = require('../db');
+const { Op } = require('sequelize');
 
 const getPokemons = async(req, res) => {
         
@@ -42,22 +43,35 @@ const getPokemons = async(req, res) => {
 const getPokemonDb = async(req, res) => {
             
     try {
-        const pokemons = await Pokemon.findAll();        
+        const pokemons = await Pokemon.findAll();   
+        
         return res.status(200).json(pokemons);
     } catch (error) {
-        return res.status(404).send(error.message);
+        return res.status(400).send(error.message);
     }
 
 }
 
 const getPokemonById = async(req, res) => {
-
+    
     const { id } = req.params;
-
-    // Si lo que se recibe por id no es un numero.
-    if(isNaN(Number(id))) {
-        return res.status(500).json({msg: 'Id debe de ser un numero'});
+    
+    try {
+        const pokemonDb = await Pokemon.findOne({
+            where: {
+                id: {
+                    [Op.eq]: id,
+                }
+            }
+        });
+        
+        return res.status(200).json(pokemonDb);
+        
+    } catch (error) {
+        // console.log(error); 
+        
     }
+    
 
     try {
         const {data} = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -89,7 +103,6 @@ const getPokemonById = async(req, res) => {
 const getPokemonByName = async(req, res) => {
 
     let {name} = req.query;
-
     
     if(!name) {
         return res.status(500).json({msg: 'Faltan datos en la query'});
@@ -97,6 +110,20 @@ const getPokemonByName = async(req, res) => {
     
     if(!isNaN(name)) {
         return res.status(500).json({msg: 'Name debe de ser un nombre'});
+    }
+
+    try {
+        const pokemonDb = await Pokemon.findOne({
+            where: {
+                name: name,
+            }
+        })
+        if(pokemonDb) {
+            return res.status(200).json(pokemonDb)
+
+        }
+    } catch (error) {
+        console.log(error);
     }
 
     name = name.toLowerCase();
@@ -119,8 +146,8 @@ const getPokemonByName = async(req, res) => {
                                     
             return res.status(201).json(pokemon);
         } else {
-            throw new Error();
         }
+        throw new Error();
     } catch (error) {
         console.log(error.message);
         return res.status(404).json({msg: `Pokemon con nombre: ${name} no existe`});

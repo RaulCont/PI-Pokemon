@@ -1,28 +1,33 @@
 
 .div_form {
-    background-color: black;
+    /* background-color: black; */
     color: white;
     display: flex;
     justify-content: center;
-}
-
-label, input, select{
-    display: block;
-}
-
-select {
-    width: 175px; 
+    flex-direction: column;
+    padding: 50px;
+    margin-top: 15px;
+    border-radius: 10px;
+    width: 100%;
+    margin-top: 40px; 
 }
 
 .form_new_pokemon {
-    display: block;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    background-color: red;
+    width: 50%;
+    margin-left: 250px;
+    padding: 50px;
+    border-radius: 10px;
+    background-color: black;
 }
 
-/* form, input {
-    width: 140px;
-} */
-
-button {
-    
-    background-color: blue;
+.input_form {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    width: 50%;
+    margin-left: 0px;
 }

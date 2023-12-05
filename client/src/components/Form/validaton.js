@@ -15,7 +15,7 @@ export const validation = (pokemon) => {
         errors.vida = 'La vida de tu pokemon debe ser mayor a 1'
     }
 
-    if(pokemon.ataque === "0") {
+    if(pokemon.ataque === '0') {
         errors.ataque = 'El ataque de tu pokemon debe ser mayor a 1'
     }
 

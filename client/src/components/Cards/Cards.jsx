@@ -32,10 +32,10 @@ export const Cards = ({pokes}) => {
                 }
             </div>
                 <div>
-                    <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                    <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className={style.btn}>
                         Prev
                     </button>
-                    <button onClick={() => handlePageChange(currentPage + 1)} disabled={indexOfLastPokemon >= pokes.length}>
+                    <button onClick={() => handlePageChange(currentPage + 1)} disabled={indexOfLastPokemon >= pokes.length} className={style.btn}>
                         Next
                     </button>
                 </div>

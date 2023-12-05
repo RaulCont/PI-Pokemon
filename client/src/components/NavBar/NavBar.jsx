@@ -38,12 +38,18 @@ const onSearchPokemon = async(event) => {
     }
 
     try {
-        const {data} = await axios.get(`http://localhost:3001/pokemons/name?name=${name}`);      
-        navigate(`/detail/${data.id}`);
+        const {data} = await axios.get(`http://localhost:3001/pokemons/name?name=${name}`);  
+        
+        if(data.id) {
+            navigate(`/detail/${data.id}`);
+        } else {
+
+           throw new Error('No existe un pokemon con ese nombre');
+        }
         
     } catch (error) {
 
-        console.log(error.response.data);
+        console.error(error.message);
     }
 }
 
@@ -52,6 +58,9 @@ const handleChange = ({target}) => {
 }
 
 const handlePokemons = (event) => {
+
+    setValoresSeleccionados(valoresOriginales)
+
     if(event.target.value === 'created') {
         
         navigate('/created');
@@ -150,71 +159,84 @@ const handleByType = (event, selector) => {
 }
 
 return (    
-    <nav className={style.navBar}>                                    
-        <div className={style.barra_nav}>
-            <select 
-                name="createdOrExisting" 
-                id="createdOrExisting"
-                onChange={handlePokemons}
-                defaultValue="existing"
-            >
-                <option value="existing" >Existentes </option>                  
-                <option value="created">Creados</option>
-            </select>
+    <nav className={style.navBar}>  
+         
+        <div className={style.top_link}>            
+            <h2 onClick={() => navigate('/home')}>Poké Dex</h2>
+            <h2 onClick={() => navigate('/form')}>Crea tu Pokemon</h2>            
+        </div> 
+        {
+            pathname === '/form' || pathname === '/detail' ? null :  
+                <div className={style.barra_nav}>
+                    <select 
+                        name="createdOrExisting" 
+                        id="createdOrExisting"
+                        onChange={handlePokemons}
+                        defaultValue="existing"
+                    >
+                        <option value="existing" >Existentes </option>                  
+                        <option value="created">Creados</option>
+                    </select>
+                            
+                    <select                 
+                        id="select1"
+                        onChange={(event) => handleSortByAbc(event, 'select1')}
+                        value={valoresSeleccionados.select1}
+                    >
+                        {/* <option value="init">Ordenar por alfabeto</option>                   */}
+                        <option value="init" disabled>Filtrar por Abecedario</option>                  
+                        <option value="A">Ascendente</option>                    
+                        <option value="D">Descendente</option>  
+                    </select> 
                     
-            <select                 
-                id="select1"
-                onChange={(event) => handleSortByAbc(event, 'select1')}
-                value={valoresSeleccionados.select1}
-            >
-                {/* <option value="init">Ordenar por alfabeto</option>                   */}
-                <option value="init" disabled>Filtrar por Abecedario</option>                  
-                <option value="A">Ascendente</option>                    
-                <option value="D">Descendente</option>  
-            </select> 
-               
-            <select                  
-                id="select2"
-                value={valoresSeleccionados.select2}                                
-                onChange={(event) => handleByPower(event, 'select2')}
-            >   
-                <option value="init" disabled>Ordenar por poder</option>
-                <option value="fuerza">Fuerza</option>
-                <option value="debilidad">Debilidad</option>
-            </select>  
+                    <select                  
+                        id="select2"
+                        value={valoresSeleccionados.select2}                                
+                        onChange={(event) => handleByPower(event, 'select2')}
+                    >   
+                        <option value="init" disabled>Ordenar por poder</option>
+                        <option value="fuerza">Fuerza</option>
+                        <option value="debilidad">Debilidad</option>
+                    </select>  
 
-            <select                  
-                id="tipo"
-                onChange={(event) => handleByType(event, 'select3')}
-                value={valoresSeleccionados.select3}              
-            >
-                <option value="init" disabled>Filtrar por tipos</option>
-                <option value="default">Default</option>
-                {
-                    types.map(t => {
-                        return (
-                            <option value={t.name} key={t.id}>
-                                {t.name.charAt(0).toUpperCase() + t.name.slice(1)}
-                            </option>
-                        )
-                    })
-                }
-            </select>             
-            
-            <form onSubmit={onSearchPokemon}>
-                <input 
-                    type="text" 
-                    onChange={handleChange} 
-                    placeholder='Busca tu pokemon'           
-                />
+                    <select                  
+                        id="tipo"
+                        onChange={(event) => handleByType(event, 'select3')}
+                        value={valoresSeleccionados.select3}              
+                    >
+                        <option value="init" disabled>Filtrar por tipos</option>
+                        <option value="default">Default</option>
+                        {
+                            types.map(t => {
+                                return (
+                                    <option value={t.name} key={t.id}>
+                                        {t.name.charAt(0).toUpperCase() + t.name.slice(1)}
+                                    </option>
+                                )
+                            })
+                        }
+                    </select>             
+                    
+                    <form 
+                        onSubmit={onSearchPokemon}
+                        // onChange={style.nav_form}  
+                        className={style.nav_form }  
+                    >
+                        <input 
+                            type="text" 
+                            onChange={handleChange} 
+                            placeholder='Busca tu pokemon'  
+                            className={style.input_nav}         
+                        />
+                        <button onClick={onSearchPokemon} className={style.search_button}>Buscar</button>
+                    </form>
+                
+                    {
+                        error.name ? <p>{error.name}</p> : null
+                    }
 
-                <button onClick={onSearchPokemon}>Buscar</button>
-            </form>
-            {
-                error.name ? <p>{error.name}</p> : null
-            }
-
-        </div>                                        
+                </div>                                        
+        }           
     </nav>   
    
   )

@@ -21,17 +21,17 @@ export const App = () => {
   
   const pokes = useSelector(state => state.pokemonList);
   return (
-    <div className="App">
+    <div className="App">      
       
       {
         pathname !== '/' ? <NavBar /> : null
-      }      
-
+      }   
+                
       <Routes>
         <Route path='/' element={<LandingPage />}/>
         <Route path='/home' element={<Cards pokes={pokes}/>}/>                
         <Route path='/card' element={<Card />}/>
-        <Route path='/form' element={<Form />}/>
+        <Route path='/form' element={<Form />}/>        
         <Route path='/detail/:id' element={<Detail />}/>
         <Route path='/sorted' element={<SortedExistingPokemons />}/>
         <Route path='/created' element={<CreatedPokemons />}/>
